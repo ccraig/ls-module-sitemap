@@ -21,6 +21,7 @@
 		
 		protected function build_form() {
 			$this->add_field('include_categories', 'Generate individual category pages', 'full', db_varchar)->tab('Categories')->renderAs(frm_checkbox);
+			$this->add_field('include_hidden_categories', 'Include hidden categories', 'full', db_varchar)->tab('Categories')->renderAs(frm_checkbox);
 			$this->add_field('categories_path', 'Category Root Path', 'full', db_varchar)->tab('Categories');
 			$this->add_field('categories_changefreq', 'Category changefreq', 'full', db_varchar)->tab('Categories')->renderAs(frm_dropdown);
 			$this->add_field('categories_priority', 'Category priority', 'full', db_varchar)->tab('Categories')->validation('The category priority field should contain a number between 0 and 1')->method('priority_validation');
@@ -43,6 +44,7 @@
 				$this->add_field('wiki_priority', 'Blog posts priority', 'full', db_varchar)->tab('Wiki Pages')->validation('The wiki pages priority field should contain a number between 0 and 1')->method('priority_validation');
 			}
 			
+			$this->add_field('include_navigation_hidden', 'Include pages not visible in navigation ', 'full', db_varchar)->tab('CMS Pages')->comment('Select to include pages that are not included in automatically generated navigation menus.')->renderAs(frm_checkbox);
 			$this->add_form_custom_area('pages')->tab('CMS Pages');
 		}
 		

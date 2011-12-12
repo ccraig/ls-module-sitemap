@@ -59,7 +59,10 @@
 			$urlset->setAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
 			$urlset->setAttribute('xsi:schemaLocation', 'http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd');
 			
-			$page_list = Cms_Page::create()->where('is_published=1')->where('sitemap_visible=1')->where('navigation_visible=1')->where('security_mode_id <> "customers"')->find_all(); 		
+			if($params->include_navigation_hidden)
+				$page_list = Cms_Page::create()->where('is_published=1')->where('sitemap_visible=1')->where('security_mode_id <> "customers"')->find_all();
+			else
+				$page_list = Cms_Page::create()->where('is_published=1')->where('sitemap_visible=1')->where('navigation_visible=1')->where('security_mode_id <> "customers"')->find_all();
 			if(count($page_list)) {
 				foreach($page_list as $page) {
 					$page_url = site_url($page->url);
@@ -70,7 +73,10 @@
 			}
 
 			if($params->include_categories) {
-				$category_list = Shop_Category::create()->limit(self::max_generated)->order('shop_categories.updated_at desc')->find_all();
+				if($params->include_hidden_categories)
+					$category_list = Shop_Category::create()->limit(self::max_generated)->order('shop_categories.updated_at desc')->find_all();
+				else
+					$category_list = Shop_Category::create()->limit(self::max_generated)->order('shop_categories.updated_at desc')->where('category_is_hidden is not true')->find_all();
 				foreach($category_list as $category) {
 					$category_url = site_url($params->categories_path.'/'.$category->url_name);
 					if(substr($category_url, -1) != '/') $category_url .= '/';
