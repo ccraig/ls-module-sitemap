@@ -25,7 +25,8 @@
 			try {
 				$params = new Sitemap_Params();
 				$this->viewData['form_model'] = $params->load();
-				$this->viewData['pages'] = Cms_Page::create()->order('navigation_sort_order asc')->find_all();
+				$this->viewData['pages'] = Cms_Page::create()->order('theme_id asc')->order('navigation_sort_order asc')->find_all();
+				$this->viewData['theming_enabled'] = Cms_Theme::is_theming_enabled();
 			}
 			catch(exception $ex) {
 				$this->_controller->handlePageError($ex);

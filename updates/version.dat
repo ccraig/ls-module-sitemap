@@ -5,3 +5,4 @@
 #5|1.2.2 Minor update in link generation (add trailing slash)
 #6|1.2.3 Added checkbox to include hidden categories
 #7|1.2.4 Added checkbox to include CMS pages hidden in the navigation
+#8|1.3.0 Added support for CMS Themes

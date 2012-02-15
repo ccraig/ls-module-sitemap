@@ -47,22 +47,29 @@
 				);
 		}
 		
-		public function generate_sitemap() {		
-			$params = Sitemap_Params::create();			
+		public function generate_sitemap() {
+			$params = Sitemap_Params::create();
 			
 			header("Content-Type: application/xml");
 			$xml = new DOMDocument();
 			$xml->encoding = 'UTF-8';
 			
-			$urlset = $xml->createElement('urlset'); 		
+			$urlset = $xml->createElement('urlset'); 
 			$urlset->setAttribute('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
 			$urlset->setAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
 			$urlset->setAttribute('xsi:schemaLocation', 'http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd');
 			
+			$active_theme = false;
+			if(Cms_Theme::is_theming_enabled())
+				$active_theme = Cms_Theme::get_active_theme();
+			
 			if($params->include_navigation_hidden)
-				$page_list = Cms_Page::create()->where('is_published=1')->where('sitemap_visible=1')->where('security_mode_id <> "customers"')->find_all();
+				$page_list = Cms_Page::create()->where('is_published=1')->where('sitemap_visible=1')->where('security_mode_id <> "customers"');
 			else
-				$page_list = Cms_Page::create()->where('is_published=1')->where('sitemap_visible=1')->where('navigation_visible=1')->where('security_mode_id <> "customers"')->find_all();
+				$page_list = Cms_Page::create()->where('is_published=1')->where('sitemap_visible=1')->where('navigation_visible=1')->where('security_mode_id <> "customers"');
+			if($active_theme)
+				$page_list->where('theme_id = ?', $active_theme->id);
+			$page_list = $page_list->find_all();
 			if(count($page_list)) {
 				foreach($page_list as $page) {
 					$page_url = site_url($page->url);
@@ -85,7 +92,7 @@
 				}
 			}
 
-			if($params->include_products) {				 
+			if($params->include_products) {
 				$root_url = Phpr::$request->getRootUrl();
 				$lssalestracking_installed = Core_ModuleManager::findById('lssalestracking');
 				//$lssalestracking_installed = Db_DbHelper::scalar('select count(*) from core_install_history where moduleId = ?', 'lssalestracking');

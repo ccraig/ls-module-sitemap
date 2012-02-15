@@ -43,7 +43,8 @@
 				$this->add_field('wiki_changefreq', 'Wiki pages changefreq', 'full', db_varchar)->tab('Wiki Pages')->renderAs(frm_dropdown);
 				$this->add_field('wiki_priority', 'Blog posts priority', 'full', db_varchar)->tab('Wiki Pages')->validation('The wiki pages priority field should contain a number between 0 and 1')->method('priority_validation');
 			}
-			
+			if(Cms_Theme::is_theming_enabled())
+				$this->add_form_section('Please note that the generated sitemap will include only the CMS pages belonging to the active theme.')->tab('CMS Pages');
 			$this->add_field('include_navigation_hidden', 'Include pages not visible in navigation ', 'full', db_varchar)->tab('CMS Pages')->comment('Select to include pages that are not included in automatically generated navigation menus.')->renderAs(frm_checkbox);
 			$this->add_form_custom_area('pages')->tab('CMS Pages');
 		}

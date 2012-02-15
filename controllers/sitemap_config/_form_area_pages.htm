@@ -3,6 +3,7 @@
 		<thead>
 			<tr>
 				<th><input type="checkbox" class="list_head_cb" value="1" onclick="$(this).findParent('table').getElements('tbody  input.list_cb').each(function(cb){cb.checked=this.checked}, this)"></th>
+				<? if($theming_enabled): ?><th>Theme</th><? endif ?>
 				<th>Page Title</th>
 				<th>Page URL</th>
 			</tr>
@@ -11,6 +12,7 @@
 			<? foreach($pages as $page): ?>
 				<tr class="<?= zebra('even') ?>">
 					<td><input type="checkbox" value="1" name="pages[<?= $page->id ?>]" id="pages_<?= $page->id ?>" <? if($page->sitemap_visible): ?>checked<? endif ?> class="list_cb"></td>
+					<? if($theming_enabled): ?><td><label class="choice" for="pages_<?= $page->id ?>"><?= Cms_Theme::get_theme_by_id($page->theme_id)->name ?></label></td><? endif ?>
 					<td><label class="choice" for="pages_<?= $page->id ?>"><?= $page->title ?></label></td>
 					<td><label class="choice" for="pages_<?= $page->id ?>"><?= $page->url ?></label></td>
 				</tr>			
