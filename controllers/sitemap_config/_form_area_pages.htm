@@ -2,7 +2,7 @@
 	<table class="simpleList">
 		<thead>
 			<tr>
-				<th><input type="checkbox" class="list_head_cb" value="1" onclick="$(this).findParent('table').getElements('tbody  input.list_cb').each(function(cb){cb.checked=this.checked}, this)"></th>
+				<th><input type="checkbox" class="list_head_cb" value="1" onclick="$(this).findParent('table').getElements('tbody  input.list_cb').each(function(cb){cb.cb_update_state(this.checked);}, this)"></th>
 				<? if($theming_enabled): ?><th>Theme</th><? endif ?>
 				<th>Page Title</th>
 				<th>Page URL</th>
