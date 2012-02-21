@@ -103,7 +103,7 @@
 	 				$product_list = $product_list->apply_filters()->where('enabled=1')->limit(self::max_generated)->order('shop_products.updated_at desc')->find_all();
 	 			} 
 	 			else {
-	 				$product_list = Db_DbHelper::objectArray('select sp.url_name, sp.updated_at, sp.created_at, p.url, p.is_published from shop_products sp left outer join pages p on (sp.page_id = p.id) where sp.enabled is true and (sp.grouped is null or sp.grouped = 0) order by updated_at limit '.self::max_generated);
+					$product_list = Db_DbHelper::objectArray('select sp.url_name, sp.updated_at, sp.created_at, sp.id, p.url, p.is_published from shop_products sp left outer join pages p on (sp.page_id = p.id) where sp.enabled is true and (sp.grouped is null or sp.grouped = 0) order by updated_at limit '.self::max_generated);
 	 			}
 	 			foreach($product_list as $product) {
 	 				if($lssalestracking_installed && class_exists('LsSalesTracking_ProductManager')) {
@@ -111,6 +111,7 @@
 	 				}
 	 				else {
 	 					 //$product_url = $root_url.$product->page_url($params->products_path);
+						 $product->url = self::get_product_url($product->id, $product->url);
 	 					 if($product->url != '' && $product->is_published == 1) 
 	 					 	$page = $product->url;
 	 					 else 
@@ -166,5 +167,19 @@
 			} 
 			else return false;
 		}
-			
+		
+		public static function get_product_url($product_id, $default = null)
+		{
+			if(Cms_Theme::is_theming_enabled() && $active_theme = Cms_Theme::get_active_theme()) {
+				$page = Db_DbHelper::scalar("select url from pages inner join cms_page_references cpr on (pages.id = cpr.page_id)
+					where cpr.object_id=:product_id
+					and object_class_name = 'Shop_Product'
+					and reference_name = 'page_id'
+					and page_id in (select id from pages where theme_id = :theme_id)", array('product_id' => $product_id, 'theme_id' => $active_theme->id));
+				return $page;
+			}
+			else {
+				return $default;
+			}
+		}
 	}
