@@ -86,7 +86,8 @@
 				else
 					$category_list = Shop_Category::create()->limit(self::max_generated)->order('shop_categories.updated_at desc')->where('category_is_hidden is not true')->find_all();
 				foreach($category_list as $category) {
-					$category_url = site_url($params->categories_path.'/'.$category->url_name);
+					$category_url = site_url($category->page_url($params->categories_path));
+
 					if(substr($category_url, -1) != '/') $category_url .= '/';
 					if($url = $this->prepare_url_element($xml, $category_url,  date('c', strtotime($category->updated_at?$category->updated_at:$category->created_at)), $params->categories_changefreq, $params->categories_priority))
 						$urlset->appendChild($url);
