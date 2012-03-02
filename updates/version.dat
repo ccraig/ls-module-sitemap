@@ -8,3 +8,4 @@
 #8|1.3.0 Added support for CMS Themes
 #9|1.3.1 Minor fix for CMS pages list in config area, updates to lastmod element (use created time if updated time is not available)
 #10|1.3.2 Minor fix to generated product pages (product url now uses correct theme)
+#11|1.3.3 Minor fix for category URLs (includes support for nested category URLs)
