@@ -112,6 +112,8 @@ class Sitemap_Generator {
 		} 			
 			
 		
+		Backend::$events->fireEvent('sitemap:onGenerateSitemap', $this,  $this->params );
+			
 		$this->xml->appendChild($this->urlset);
 			
 		

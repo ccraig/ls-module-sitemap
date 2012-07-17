@@ -47,6 +47,9 @@
 				$this->add_form_section('Please note that the generated sitemap will include only the CMS pages belonging to the active theme.')->tab('CMS Pages');
 			$this->add_field('include_navigation_hidden', 'Include pages not visible in navigation ', 'full', db_varchar)->tab('CMS Pages')->comment('Select to include pages that are not included in automatically generated navigation menus.')->renderAs(frm_checkbox);
 			$this->add_form_custom_area('pages')->tab('CMS Pages');
+			
+			Backend::$events->fireEvent('sitemap:onExtendSitemapParamsModel', $this);
+
 		}
 		
 		protected function init_config_data() {
@@ -73,6 +76,9 @@
 				$this->wiki_changefreq = 'monthly';			
 				$this->wiki_priority = 0.2;
 			}
+
+			Backend::$events->fireEvent('sitemap:onInitSitemapParamsData', $this);
+
 		}
 			
 		public function get_products_changefreq_options($key_index = -1)		{
