@@ -16,3 +16,17 @@ The sitemap is generated using the Sitemap protocol and can be accessed in your 
 
 ### Dependencies
 The module requires the CMS Themes feature. If you are installing the Sitemap module manually, please ensure you have version 1.3.0 of the CMS module or later.
+
+### Events
+Module provides three events that you can use to extend it:
+* sitemap:onGenerateSitemap
+   Called when sitemap is generated.
+   Handler receives Sitemap_Generator object and current Sitemap_Params
+
+* sitemap:onInitSitemapParamsData
+   Called to provide default parameter values
+   Handler receives Sitemap_Params object
+
+* sitemap:onExtendSitemapParamsModel
+   Called when Sitemap_Params model form is generated.
+   Handler receives Sitemap_Params object
