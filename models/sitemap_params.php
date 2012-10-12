@@ -64,43 +64,42 @@
 			$this->products_changefreq = 'monthly';
 			$this->products_priority = 0.3;
 			
-			$this->include_blogposts = 0;			
-			$this->blogposts_path = '/blog/post';			
-			$this->blogposts_changefreq = 'monthly';			
+			$this->include_blogposts = 0;
+			$this->blogposts_path = '/blog/post';
+			$this->blogposts_changefreq = 'monthly';
 			$this->blogposts_priority = 0.2;
 			
 			$wiki_installed = Core_ModuleManager::findById('wiki');
 			if($wiki_installed) {
-				$this->include_wiki = 1;			
-				$this->wiki_path = '/docs';			
-				$this->wiki_changefreq = 'monthly';			
+				$this->include_wiki = 1;
+				$this->wiki_path = '/docs';
+				$this->wiki_changefreq = 'monthly';
 				$this->wiki_priority = 0.2;
 			}
 
 			Backend::$events->fireEvent('sitemap:onInitSitemapParamsData', $this);
-
 		}
-			
-		public function get_products_changefreq_options($key_index = -1)		{
-				return $this->changefreq_options;
-			}
 		
-			public function get_categories_changefreq_options($key_index = -1)		{
+		public function get_products_changefreq_options($key_index = -1) {
 			return $this->changefreq_options;
 		}
 		
-		public function get_blogposts_changefreq_options($key_index = -1)		{
+		public function get_categories_changefreq_options($key_index = -1) {
 			return $this->changefreq_options;
 		}
 		
-		public function get_wiki_changefreq_options($key_index = -1)		{
+		public function get_blogposts_changefreq_options($key_index = -1) {
+			return $this->changefreq_options;
+		}
+		
+		public function get_wiki_changefreq_options($key_index = -1) {
 			return $this->changefreq_options;
 		}
 		
 		public function priority_validation($name, $value) {
 			if ($value > 1 || $value < 0)
 				$this->validation->setError('Priority should be between 0 and 1', $name, true);
-				
+			
 			return true;
 		}
 	}

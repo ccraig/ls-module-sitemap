@@ -10,3 +10,4 @@
 #10|1.3.2 Minor fix to generated product pages (product url now uses correct theme)
 #11|1.3.3 Minor fix for category URLs (includes support for nested category URLs)
 #12|1.3.4 Minor update for config page
+#13|1.4.0 Added module events (sitemap:onExtendSitemapParamsModel, sitemap:onGenerateSitemap, sitemap:onInitSitemapParamsData)

@@ -2,12 +2,11 @@
 
 	class SiteMap_Module extends Core_ModuleBase {
 	
-	
 		protected function createModuleInfo() {
 			return new Core_ModuleInfo(
 				"Site Map",
 				"Adds a sitemap to your store",
-				"Limewheel Creative Inc." );				
+				"Limewheel Creative Inc." );
 		}
 		
 		public function subscribeEvents() {
@@ -24,12 +23,12 @@
 				$page->add_form_field('sitemap_visible', 'Appears on site map')->tab('Visibility')->renderAs(frm_checkbox);
 		}
 		
-		public function listSettingsItems()	{
+		public function listSettingsItems() {
 			$result = array(
 				array(
-					'icon'=>'/modules/sitemap/resources/images/sitemap.png', 
-					'title'=>'Sitemap Configuration', 
-					'url'=>'/sitemap/config/', 
+					'icon'=>'/modules/sitemap/resources/images/sitemap.png',
+					'title'=>'Sitemap Configuration',
+					'url'=>'/sitemap/config/',
 					'description'=>'Setup the sitemap',
 					'sort_id'=>300
 				)
@@ -38,7 +37,7 @@
 			return $result;
 		}
 		
-		public function register_access_points()	{
+		public function register_access_points() {
 				return array(
 					'sitemap.xml' =>'generate_sitemap',
 					'ls_sitemap' => 'generate_sitemap'
