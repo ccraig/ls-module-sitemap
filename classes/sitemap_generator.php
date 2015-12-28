@@ -59,17 +59,57 @@
 				}
 				
 				if($this->url_count < self::max_urls && $this->params->include_products) {
+					$include_not_visible_catalog = $this->params->include_products_not_visible_catalog ? true : false;
+					$include_not_visible_search  = $this->params->include_products_not_visible_search ? true : false;
+
+					if ($include_not_visible_catalog) {
+						//traceLog("include_not_visible_catalog = true");
+					} else {
+						//traceLog("include_not_visible_catalog = false");
+					}
+
+					if ($include_not_visible_search) {
+						//traceLog("include_not_visible_search = true");
+					} else {
+						//traceLog("include_not_visible_search = false");
+					}
+
 					$root_url = Phpr::$request->getRootUrl();
 					$lssalestracking_installed = Core_ModuleManager::findById('lssalestracking');
 					//$lssalestracking_installed = Db_DbHelper::scalar('select count(*) from core_install_history where moduleId = ?', 'lssalestracking');
 					
 					if($lssalestracking_installed && class_exists('LsSalesTracking_ProductManager')) {
 						$product_list = new Shop_Product(null, array('no_column_init' => true, 'no_validation' => true)); 
-						$product_list = $product_list->apply_filters()->where('enabled=1')->limit(self::max_generated)->order('shop_products.updated_at desc')->find_all();
+						$product_list = $product_list->apply_filters()->where('enabled=1');
+
+						if (!$include_not_visible_catalog) {
+							$product_list->where('visibility_catalog = 1');
+						}
+						if (!$include_not_visible_search) {
+							$product_list->where('visibility_search = 1');
+						}
+
+						$product_list->limit(self::max_generated)->order('shop_products.updated_at desc')->find_all();
 					}
 					else {
-					$product_list = Db_DbHelper::objectArray('select sp.url_name, sp.updated_at, sp.created_at, sp.id, p.url, p.is_published from shop_products sp left outer join pages p on (sp.page_id = p.id) where sp.enabled is true and (sp.grouped is null or sp.grouped = 0) order by updated_at limit '.self::max_generated);
+						//traceLog("lssalestracking NOT installed");
+
+						$product_list_sql = 'select sp.url_name, sp.updated_at, sp.created_at, sp.id, p.url, p.is_published from shop_products sp left outer join pages p on (sp.page_id = p.id) where sp.enabled is true and (sp.grouped is null or sp.grouped = 0) ';
+
+						if (!$include_not_visible_catalog) {
+							$product_list_sql .= 'and visibility_catalog = 1 ';
+						}
+						if (!$include_not_visible_search) {
+							$product_list_sql .= 'and visibility_search = 1 ';
+						}
+
+						$product_list_sql .= 'order by updated_at limit '.self::max_generated;
+
+						//traceLog($product_list_sql);
+
+						$product_list = Db_DbHelper::objectArray($product_list_sql);
 					}
+
 					foreach($product_list as $product) {
 						if($lssalestracking_installed && class_exists('LsSalesTracking_ProductManager')) {
 							$product_url = site_url($this->params->products_path.LsSalesTracking_ProductManager::get_marketplace_product_url($product));

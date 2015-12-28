@@ -27,6 +27,8 @@
 			$this->add_field('categories_priority', 'Category priority', 'full', db_varchar)->tab('Categories')->validation('The category priority field should contain a number between 0 and 1')->method('priority_validation');
 			
 			$this->add_field('include_products', 'Generate individual product pages', 'full', db_varchar)->tab('Products')->renderAs(frm_checkbox);
+			$this->add_field('include_products_not_visible_search', 'Include products not visible in search results?', 'full', db_varchar)->tab('Products')->renderAs(frm_checkbox);
+			$this->add_field('include_products_not_visible_catalog', 'Include products not visible in the catalog?', 'full', db_varchar)->tab('Products')->renderAs(frm_checkbox);
 			$this->add_field('products_path', 'Product Root Path', 'full', db_varchar)->tab('Products');
 			$this->add_field('products_changefreq', 'Product changefreq', 'full', db_varchar)->tab('Products')->renderAs(frm_dropdown);
 			$this->add_field('products_priority', 'Product priority', 'full', db_varchar)->tab('Products')->validation('The products priority field should contain a number between 0 and 1')->method('priority_validation');
